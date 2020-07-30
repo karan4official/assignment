@@ -1,0 +1,78 @@
+<!doctype html>
+<html ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-route.min.js"></script>
+  </head>
+  <style>.modal-dialog {
+    max-width: 95vw;
+}
+      </style>
+  <body>
+    <div class="container">
+        <h2>Movies</h2>
+    <div ng-app="myApp" ng-controller="myCtrl"> 
+        <div class="row">
+            <div class="col">Movie Title</div>
+            <div class="col">Director’s Name</div>
+            <div class="col">Movie’s Rating</div>
+            <div class="col">Movie Poster</div>
+        </div>
+            <div class="row" ng-repeat="movie in data">
+            <div class="col">{{movie.title}} <br/><button type="button" class="btn btn-info" data-toggle="modal" data-target="#open{{movie.id}}">View Details</button></div>
+              <div class="col">{{movie.director}}</div>
+              <div class="col">{{movie.rt_score}} / 100</div>
+              <div class="col">{{movie.Poster}} Not available</div>
+            </div>
+            <div ng-repeat="movie in data">
+                 <!-- Modal -->
+  <div class="modal fade" id="open{{movie.id}}" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">{{movie.title}}</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          
+        </div>
+        <div class="modal-body">
+          <p><b>Directed By </b>{{movie.title}} </p>
+          <p><b>Description </b>{{movie.description}} </p>
+          <p><b>Producer </b>{{movie.producer}} </p>
+          <p><b>Releasing on </b>{{movie.release_date}} </p>
+          <p><b>IMDB Rating </b>{{movie.rt_score}} / 100</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+           
+</div>
+</div>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope, $http) {
+      $http({
+    method : "GET",
+      url : "https://ghibliapi.herokuapp.com/films"
+  }).then(function mySuccess(response) {
+    $scope.data = response.data;
+  }, function myError(response) {
+    $scope.data = response.statusText;
+  });
+    });
+</script>
+
+  </body>
+</html>
